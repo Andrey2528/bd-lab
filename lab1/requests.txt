@@ -1,21 +1,24 @@
-CREATE DATABASE librarydb;	/*Создаем базу данных librarydb*/
+/*Создаем базу данных librarydb*/
+CREATE DATABASE librarydb;	
 
-USE librarydb;	/*указываем какую баду мы используем*/
+/*указываем какую базу мы используем*/
+USE librarydb;	
 
-CREATE TABLE book	/*Создаем таблицу с книгами book*/
+/*Создаем таблицу с книгами book суниверсальными ключами*/
+CREATE TABLE book	
 (
-	number int,
-    cod    int,
+	number int NOT NULL,
+    cod    int NOT NULL PRIMARY KEY,
     new	   boolean,
-    name   varchar(255),
-    price float,
-    producer varchar(255),
-    sides int,
-    form  varchar(255),
-    datee date,
-    circulation int,
-    topic varchar(255),
-    category varchar(255)
+    name   varchar(255) NOT NULL,
+    price float DEFAULT =<25> NOT NULL,
+    producer varchar(20) NOT NULL,
+    sides int NOT NULL,
+    form  varchar(255) NOT NULL,
+    datee date NOT NULL,
+    circulation int NOT NULL,
+    topic varchar(255) NOT NULL,
+    category varchar(255) NOT NULL
 );
 
 INSERT INTO book(number,cod,new,name,price,producer,sides,form,datee,circulation,topic,category) /*вставлям новые записи в таблицу book*/
@@ -40,36 +43,20 @@ VALUES  (2,5111,0,'Аппаратные средства мультимедия.
         (220,4687,0,'Эффективное использование C++ .50 рекомендаций по улучшению ваших программ и проектов',17.60,'ДМК',240,'70х100/16','2000-02-03',5000,'Програмування','C&C++');
 
 
-DROP DATABASE librarydb; /*удаляем базу данных librarydb*/
 
-CREATE DATABASE librarydb;	/*Создаем базу данных librarydb*/
 
-USE librarydb;	/*указываем какую баду мы используем*/
+/*добавляем поле Autor*/
+ALTER TABLE book add Autor varchar(15); 
 
-CREATE TABLE book	/*Создаем таблицу с книгами book суниверсальными ключами*/
-(
-	number int NOT NULL,
-    cod    int NOT NULL PRIMARY KEY,
-    new	   boolean,
-    name   varchar(255) NOT NULL,
-    price float NOT NULL,
-    producer varchar(20) NOT NULL,
-    sides int NOT NULL,
-    form  varchar(255) NOT NULL,
-    datee date NOT NULL,
-    circulation int NOT NULL,
-    topic varchar(255) NOT NULL,
-    category varchar(255) NOT NULL
-);
+/*увеличиваем розмер текствого поля Autor до 20*/
+ALTER TABLE book MODIFY COLUMN Autor varchar(25); 
 
-ALTER TABLE book add Autor varchar(15); /*добавляем поле Autor*/
+/*удаляем колонку Autor*/
+ALTER TABLE book DROP COLUMN Autor; 
 
-ALTER TABLE book MODIFY COLUMN Autor varchar(25); /*увеличиваем розмер текствого поля Autor до 20*/
+/*создаем уникальный индекс book_marks в таблице book*/
+CREATE UNIQUE INDEX book_marks ON book (number); 
 
-ALTER TABLE book DROP COLUMN Autor; /*удаляем колонку Autor*/
-
-CREATE UNIQUE INDEX book_marks ON book (number); /*создаем уникальный индекс book_marks в таблице book*/
-
-SELECT * FROM book ORDER BY NUMBER DESC;	/*выбираем всё с таблицы book и разворачиваем сортировку наоборот*/
-
+/*выбираем всё с таблицы book и разворачиваем сортировку по номеру наоборот*/
+SELECT * FROM book ORDER BY number DESC;	
 DROP INDEX book_marks ON book;	/*удаляем индекс*/
